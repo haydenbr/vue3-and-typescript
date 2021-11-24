@@ -1,30 +1,26 @@
 <template>
   <table class="mail-table">
     <tbody>
-    <ModalView
-      v-for="email in emails"
-      :key="email.id"
-    >
-      <template v-slot:modal-trigger="triggerProps">
         <MailListItem
+          v-for="email in emails"
+          :key="email.id"
           :email="email"
           @archive="archiveEmail(email.id)"
-          @click="openEmail(email.id), triggerProps.openModal()"
+          @click="openEmail(email.id)"
         />
-      </template>
-      <template v-slot:modal-content>
-        <MailView :email="currentEmail" />
-      </template>
-    </ModalView>
     </tbody>
   </table>
+
+  <ModalView>
+    <MailView :email="currentEmail" />
+  </ModalView>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, defineAsyncComponent } from 'vue'
+import { computed, defineComponent, ref, defineAsyncComponent, inject } from 'vue'
 import axios from 'axios'
 import DateFormat from '@/components/DateFormat.vue'
-import ModalView from '@/components/ModalView.vue'
+import { ModalView, useModal } from '@/components/Modal'
 import MailView from '@/components/MailView.vue'
 import MailListItem from '@/components/MailListItem.vue'
 import { Email } from '@/types'
@@ -37,6 +33,7 @@ export default defineComponent({
     const { data } = await axios.get<Email[]>('http://localhost:3000/emails')
     const emails = ref<Email[]>(data)
     const curentEmailId = ref<number>()
+    const { openModal } = useModal()
 
     function _updateEmail (emailId: number, updater: (e: Email) => void) {
       let updatedEmail: Email | undefined
@@ -59,6 +56,7 @@ export default defineComponent({
     function openEmail (emailId: number) {
       _updateEmail(emailId, e => e.read = true)
       curentEmailId.value = emailId
+      openModal()
     }
 
     function archiveEmail (emailId: number) {

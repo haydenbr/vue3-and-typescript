@@ -1,22 +1,25 @@
 <template>
-  <h1>VMail Inbox</h1>
-  <Suspense>
-    <template #default>
-      <MailTable/>
-    </template>
-    <template #fallback>
-      Loading...
-    </template>
-  </Suspense>
+  <ModalRoot>
+    <h1>VMail Inbox</h1>
+    <Suspense>
+      <template #default>
+        <MailTable/>
+      </template>
+      <template #fallback>
+        Loading...
+      </template>
+    </Suspense>
+  </ModalRoot>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MailTable from '@/components/MailTable.vue'
+import { ModalRoot } from '@/components/Modal'
 
 export default defineComponent({
   name: 'App',
-  components: {MailTable}
+  components: { MailTable, ModalRoot }
 })
 </script>
 
@@ -74,7 +77,7 @@ input[type='checkbox']:checked {
 .modal, .overlay {
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
 }
