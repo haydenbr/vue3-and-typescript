@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { useKeydown } from '@/util'
 
 export default defineComponent({
   name: 'ModalView',
@@ -25,6 +26,10 @@ export default defineComponent({
     function openModal () {
       modalOpen.value = true
     }
+
+    useKeydown([
+      { key: 'Escape', handler: () => closeModal() }
+    ])
 
     return {
       modalOpen,
