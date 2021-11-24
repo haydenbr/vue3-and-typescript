@@ -9,14 +9,14 @@ import { onMountOrUpdate } from '@/util'
 export default defineComponent({
   name: 'DateFormatSlot',
   props: {
-    format: {type: String, default: 'MMM do, yyyy'}
+    format: { type: String, default: 'MMM do, yyyy' }
   },
-  setup(props, { slots }) {
+  setup (props, { slots }) {
     const formattedDate = ref()
     let previousRawDate = ''
 
     onMountOrUpdate(() => {
-      const rawDate = formattedDate.value = slots && slots.default && slots.default()[0].children as string
+      const rawDate = slots && slots.default && slots.default()[0].children as string
 
       if (!rawDate || rawDate === previousRawDate) {
         return
@@ -26,7 +26,7 @@ export default defineComponent({
       previousRawDate = rawDate
     })
 
-    return {formattedDate}
+    return { formattedDate }
   }
 })
 </script>
